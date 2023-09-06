@@ -26,14 +26,12 @@
       </div>
 
       <v-spacer></v-spacer>
-
+      
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
         text
+        @click="goToLogin()"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      เข้าสู่ระบบ
       </v-btn>
     </v-app-bar>
 
@@ -50,6 +48,11 @@ export default {
 
   data: () => ({
     //
-  })
+  }),
+  methods:{
+    goToLogin(){
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
