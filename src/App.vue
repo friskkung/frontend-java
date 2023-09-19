@@ -26,7 +26,12 @@
       </div>
 
       <v-spacer></v-spacer>
-      
+      <v-btn
+        text
+        @click="goToTableManange()"
+      >
+      จัดการตาราง
+      </v-btn>
       <v-btn
         text
         @click="goToLogin()"
@@ -51,7 +56,10 @@ export default {
   }),
   methods:{
     goToLogin(){
-      this.$router.push('/login')
+      this.$router.push({path:('/login')}).catch(()=>{})
+    },
+    goToTableManange(){
+      this.$router.push({path:('/manangeTable')}).catch(()=>{})
     }
   }
 }
