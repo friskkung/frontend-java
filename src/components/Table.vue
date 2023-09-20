@@ -211,7 +211,7 @@ export default {
                 console.log('data after send===>', data)
                 try {
                     var dataResponse = await this.axios.post('http://localhost:9001/employee', data)
-                    console.log('dataResponse ===>', dataResponse)
+                    console.log('dataResponse ===> ', dataResponse)
                     this.close()
                     this.initialize()
                 } catch (error) {
