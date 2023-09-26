@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="employeeItem" sort-by="calories" class="elevation-1">
+        <v-data-table :headers="headers" :items="studentItem" sort-by="calories" class="elevation-1">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title>จัดการข้อมูล</v-toolbar-title>
@@ -11,7 +11,7 @@
                     </v-btn>
                 </v-toolbar>
             </template>
-            <template v-slot:[`item.role`]="{ item }">{{ item.role.name }}</template>
+            <template v-slot:[`item.stdEmail`]="{ item }">{{ item.stdEmail }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="openDialog('แก้ไขข้อมูล', item)">
                     mdi-pencil
@@ -36,16 +36,16 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="firstName" label="ชื่อ"></v-text-field>
+                                <v-text-field v-model="stdId" label="รหัสนักศึกษา"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="lastName" label="นามสกุล"></v-text-field>
+                                <v-text-field v-model="stdName" label="ชื่อ"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="salary" label="เงินเดือน"></v-text-field>
+                                <v-text-field v-model="stdSurName" label="นามสกุล"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="role" label="ตำแหน่ง"></v-text-field>
+                                <v-text-field v-model="stdEmail" label="เมลล์"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -81,24 +81,24 @@ export default {
     data: () => ({
         dialog: false,
         dialogDelete: false,
-        firstName: '',
-        lastName: '',
-        salary: '',
-        role: '',
+        stdId: '',
+        stdName: '',
+        stdSurName: '',
+        stdEmail: '',
         headers: [
             {
                 text: 'ไอดี',
                 align: 'start',
                 sortable: false,
-                value: 'employeeId',
+                value: 'id',
             },
-            { text: 'ชื่อ', value: 'firstName' },
-            { text: 'นามสกุล', value: 'lastName' },
-            { text: 'เงินเดือน', value: 'salary' },
-            { text: 'ตำแหน่ง', value: 'role' },
+            { text: 'รหัสนักศึกษา', value: 'stdId' },
+            { text: 'ชื่อ', value: 'stdName' },
+            { text: 'นามสกุล', value: 'stdSurName' },
+            { text: 'เมลล์', value: 'stdEmail' },
             { text: 'Actions', value: 'actions', sortable: false },
         ],
-        employeeItem: [],
+        studentItem: [],
         editedIndex: -1,
         editedItem: {
             name: '',
@@ -115,7 +115,7 @@ export default {
             protein: 0,
         },
         formTitle: '',
-        idEmployee:'',
+        idStudent:'',
         idForDelete:''
     }),
     watch: {
@@ -133,11 +133,11 @@ export default {
 
     methods: {
         async initialize() {
-            this.employeeItem = []
+            this.studentItem = []
             try {
-                var data = await this.axios.get('http://localhost:9001/employee')
-                console.log('data employee===>', data)
-                this.employeeItem = data.data
+                var data = await this.axios.get('http://localhost:9001/students')
+                console.log('data student===>', data)
+                this.studentItem = data.data
             } catch (error) {
                 console.log(error.message)
             }
@@ -152,22 +152,22 @@ export default {
             } else {
                 this.formTitle = 'แก้ไขข้อมูล'
                 this.dialog = true
-                this.firstName = item.firstName
-                this.lastName = item.lastName
-                this.salary = item.salary
-                this.role = item.role.name
-                this.idEmployee = item.employeeId
+                this.stdId = item.stdId
+                this.stdName = item.stdName
+                this.stdSurName = item.stdSurName
+                this.stdEmail = item.stdEmail
+                this.idStudent = item.id
 
             }
         },
         deleteItem(item) {
-            this.idForDelete = item.employeeId
+            this.idForDelete = item.id
             this.dialogDelete = true
         },
 
         async deleteItemConfirm() {
             try {
-                var data = await this.axios.delete('http://localhost:9001/employee/'+this.idForDelete)
+                var data = await this.axios.delete('http://localhost:9001/students/'+this.idForDelete)
                 this.initialize()
             } catch (error) {
                 
@@ -177,10 +177,10 @@ export default {
 
         close() {
             this.dialog = false
-            this.firstName=''
-            this.lastName=''
-            this.salary=''
-            this.role=''
+            this.stdId=''
+            this.stdName=''
+            this.stdSurName=''
+            this.stdEmail=''
         },
 
         closeDelete() {
@@ -196,21 +196,16 @@ export default {
                 // this.desserts.push(this.editedItem)
                 // this.dialog=false
                 var data = {
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    salary: this.salary,
-                    role: {
-                        name:this.role
-                    },
-                    skills: [
-                        {
-                            skill:''
-                        }
-                    ]
+                    stdId: this.stdId,
+                    stdName: this.stdName,
+                    stdSurName: this.stdSurName,
+                    stdEmail:this.stdEmail
+                    
                 }
                 console.log('data after send===>', data)
                 try {
-                    var dataResponse = await this.axios.post('http://localhost:9001/employee', data)
+                    console.log('dataResponse ===> ', dataResponse)
+                    var dataResponse = await this.axios.post('http://localhost:9001/students', data)
                     console.log('dataResponse ===> ', dataResponse)
                     this.close()
                     this.initialize()
@@ -219,21 +214,15 @@ export default {
                 }
             } else {
                 var data = {
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    salary: this.salary,
-                    role: {
-                        name:this.role
-                    },
-                    skills: [
-                        {
-                            skill:''
-                        }
-                    ]
+                    stdId: this.stdId,
+                    stdName: this.stdName,
+                    stdSurName: this.stdSurName,
+                    stdEmail:this.stdEmail
+                    
                 }
                 console.log('data after send===>', data)
                 try {
-                    var dataResponse = await this.axios.put('http://localhost:9001/employee/'+this.idEmployee,data)
+                    var dataResponse = await this.axios.put('http://localhost:9001/students/'+this.id,data)
                     console.log('dataResponse ===>', dataResponse)
                     this.close()
                     this.initialize()
