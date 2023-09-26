@@ -152,7 +152,9 @@ export default {
             } else {
                 this.formTitle = 'แก้ไขข้อมูล'
                 this.dialog = true
+                console.log("item.stdId===>",item.stdId)
                 this.stdId = item.stdId
+                console.log("stdId ===>",this.stdId)
                 this.stdName = item.stdName
                 this.stdSurName = item.stdSurName
                 this.stdEmail = item.stdEmail
@@ -192,17 +194,16 @@ export default {
         },
 
         async save(actions) {
-            if (actions === 'เพิ่มข้อมูล') {
-                // this.desserts.push(this.editedItem)
-                // this.dialog=false
-                var data = {
+            var data = {
                     stdId: this.stdId,
                     stdName: this.stdName,
                     stdSurName: this.stdSurName,
                     stdEmail:this.stdEmail
-                    
                 }
-                console.log('data after send===>', data)
+            if (actions === 'เพิ่มข้อมูล') {
+                // this.desserts.push(this.editedItem)
+                // this.dialog=false
+                console.log('data before send===>', data)
                 try {
                     console.log('dataResponse ===> ', dataResponse)
                     var dataResponse = await this.axios.post('http://localhost:9001/students', data)
@@ -213,17 +214,11 @@ export default {
                     console.log(error.message)
                 }
             } else {
-                var data = {
-                    stdId: this.stdId,
-                    stdName: this.stdName,
-                    stdSurName: this.stdSurName,
-                    stdEmail:this.stdEmail
-                    
-                }
-                console.log('data after send===>', data)
+                console.log("item.stdId_save===>",this.stdId)
+                console.log('data before send===>', data)
                 try {
-                    var dataResponse = await this.axios.put('http://localhost:9001/students/'+this.id,data)
-                    console.log('dataResponse ===>', dataResponse)
+                    var dataResponse = await this.axios.put('http://localhost:9001/students/'+this.idStudent,data)
+                    console.log('data after send ===>', dataResponse)
                     this.close()
                     this.initialize()
                 } catch (error) {
