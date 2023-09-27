@@ -28,6 +28,12 @@
       <v-spacer></v-spacer>
       <v-btn
         text
+        @click="goToConnectBackend()"
+      >
+      CONNECT BACKEND
+      </v-btn>
+      <v-btn
+        text
         @click="goToTableManange()"
       >
       จัดการตาราง
@@ -60,6 +66,9 @@ export default {
     },
     goToTableManange(){
       this.$router.push({path:('/manangeTable')}).catch(()=>{})
+    },
+    goToConnectBackend(){
+      this.$router.push({path:('/connectBackend')}).catch(()=>{})
     }
   }
 }

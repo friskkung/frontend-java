@@ -27,6 +27,11 @@ const routes = [
     path:'/manangeTable',
     name:'manangeTable',
     component: ()=> import('../views/TableView.vue')
+  },
+  {
+    path:'/connectBackend',
+    name:'connectBackend',
+    component: ()=> import('../views/StudentTableView.vue')
   }
 ]
 
